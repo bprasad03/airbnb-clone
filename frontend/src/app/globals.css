@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --airbnb-rausch: #ff5a5f;
+  --airbnb-primary: #ff385c;
+  --airbnb-babu: #00a699;
+  --airbnb-arches: #fc642d;
+  --airbnb-hof: #484848;
+  --airbnb-foggy: #767676;
+  --airbnb-dark: #222222;
+  --airbnb-light-gray: #dddddd;
+  --airbnb-bg: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--airbnb-dark);
+  background: var(--airbnb-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+@utility shadow-search {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+@utility shadow-card {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.rdp-root {
+  --rdp-accent-color: #ff385c;
+  --rdp-accent-background-color: #fff0f3;
+}
