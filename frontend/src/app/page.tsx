@@ -27,7 +27,7 @@ export default function AllPage() {
             const cardWrapperClass = "w-[85%] sm:w-[calc(100%/2.25)] md:w-[calc(100%/3.4)] lg:w-[calc(100%/4.7)] xl:w-[calc(100%/6.1)] 2xl:w-[calc(100%/7.4)] flex-shrink-0 snap-start";
             return (
               <div key={listing.id} className={cardWrapperClass}>
-                <ListingCard listing={listing} onWishlistToggle={handleWishlist} />
+                <ListingCard listing={listing} />
               </div>
             );
           })}

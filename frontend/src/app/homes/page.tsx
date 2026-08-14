@@ -26,7 +26,7 @@ export default function HomesPage() {
         <CarouselSection title="Popular homes in Goa">
           {popularHomes.map((listing) => (
             <div key={listing.id} className={cardWrapperClass}>
-              <ListingCard listing={listing} onWishlistToggle={handleWishlist} />
+              <ListingCard listing={listing} />
             </div>
           ))}
         </CarouselSection>
@@ -34,7 +34,7 @@ export default function HomesPage() {
         <CarouselSection title="Available in Chandigarh this weekend">
           {weekendHomes.map((listing) => (
             <div key={listing.id} className={cardWrapperClass}>
-              <ListingCard listing={listing} onWishlistToggle={handleWishlist} />
+              <ListingCard listing={listing} />
             </div>
           ))}
         </CarouselSection>
@@ -42,7 +42,7 @@ export default function HomesPage() {
         <CarouselSection title="Stay in Pondicherry">
           {stayHomes.map((listing) => (
             <div key={listing.id} className={cardWrapperClass}>
-              <ListingCard listing={listing} onWishlistToggle={handleWishlist} />
+              <ListingCard listing={listing} />
             </div>
           ))}
         </CarouselSection>
