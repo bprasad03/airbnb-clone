@@ -13,6 +13,9 @@ import {
 } from "lucide-react";
 import { useApp } from "@/context/AppContext";
 
+import { useState } from "react";
+import SearchBar from "@/components/SearchBar";
+
 const DEMO_USERS = [
   { id: 1, name: "Priya (Guest)", role: "guest" },
   { id: 2, name: "Rajesh (Host)", role: "host" },
@@ -24,11 +27,16 @@ export default function Navbar() {
   const { user, userId, setUserId } = useApp();
   const isHostPage = pathname.startsWith("/host");
 
+  const [location, setLocation] = useState("");
+  const [checkIn, setCheckIn] = useState<Date | undefined>();
+  const [checkOut, setCheckOut] = useState<Date | undefined>();
+  const [guests, setGuests] = useState(1);
+
   return (
     <header className="sticky top-0 z-50 border-b border-[#ebebeb] bg-white">
       <div className="mx-auto flex h-20 max-w-[1760px] items-center justify-between px-6 md:px-10">
         <Link href="/" className="flex items-center gap-2">
-          <img src="/logo (3).png" alt="Airbnb" className="h-8 object-contain" />
+          <img src="/logo (3).png" alt="Airbnb" className="h-12 w-auto object-contain" />
         </Link>
 
         {!isHostPage && (
@@ -164,6 +172,23 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+
+      {!isHostPage && (
+        <div className="flex justify-center pb-6">
+          <SearchBar
+            location={location}
+            checkIn={checkIn}
+            checkOut={checkOut}
+            guests={guests}
+            onLocationChange={setLocation}
+            onCheckInChange={setCheckIn}
+            onCheckOutChange={setCheckOut}
+            onGuestsChange={setGuests}
+            onSearch={() => {}}
+            onFiltersOpen={() => {}}
+          />
+        </div>
+      )}
     </header>
   );
 }

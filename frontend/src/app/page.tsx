@@ -24,10 +24,6 @@ const mixedItems = [
 
 export default function AllPage() {
   const { showToast } = useApp();
-  const [location, setLocation] = useState("");
-  const [checkIn, setCheckIn] = useState<Date | undefined>();
-  const [checkOut, setCheckOut] = useState<Date | undefined>();
-  const [guests, setGuests] = useState(1);
 
   const handleWishlist = () => {
     showToast("Updated wishlist");
@@ -35,21 +31,6 @@ export default function AllPage() {
 
   return (
     <div>
-      <section className="border-b border-[#ebebeb] px-6 py-6 md:px-10">
-        <SearchBar
-          location={location}
-          checkIn={checkIn}
-          checkOut={checkOut}
-          guests={guests}
-          onLocationChange={setLocation}
-          onCheckInChange={setCheckIn}
-          onCheckOutChange={setCheckOut}
-          onGuestsChange={setGuests}
-          onSearch={() => {}}
-          onFiltersOpen={() => {}}
-        />
-      </section>
-
       <section className="mx-auto max-w-[1760px] px-6 py-10 md:px-10">
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-[var(--airbnb-dark)]">Explore all</h2>
