@@ -34,7 +34,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#ebebeb] bg-white">
-      <div className="mx-auto flex h-20 max-w-[1760px] items-center justify-between px-6 md:px-10">
+      <div className="relative mx-auto flex h-20 max-w-[1760px] items-center justify-between px-6 md:px-10">
         <Link href="/" className="flex items-center gap-2">
           <img src="/logo (3).png" alt="Airbnb" className="h-12 w-auto object-contain" />
         </Link>
