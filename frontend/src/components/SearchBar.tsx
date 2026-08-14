@@ -96,7 +96,7 @@ export default function SearchBar({
   }
 
   return (
-    <div className="relative mx-auto max-w-[850px]" ref={containerRef}>
+    <div className="relative mx-auto w-full max-w-[850px]" ref={containerRef}>
       <div className="flex h-16 items-center rounded-full border border-[var(--airbnb-light-gray)] bg-white shadow-search">
         {/* WHERE */}
         <div 
