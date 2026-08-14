@@ -87,6 +87,11 @@ export default function AllPage() {
             return null;
           })}
         </div>
+        <div className="mt-12 flex justify-center pb-12">
+          <button className="rounded-lg border border-black bg-white px-6 py-3 font-semibold text-[var(--airbnb-dark)] hover:bg-[#f7f7f7] transition">
+            Show more
+          </button>
+        </div>
       </section>
     </div>
   );

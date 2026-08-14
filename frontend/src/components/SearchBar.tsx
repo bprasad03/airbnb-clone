@@ -20,7 +20,7 @@ interface Props {
   thirdFieldLabel?: string;
 }
 
-type PanelType = "where" | "checkIn" | "checkOut" | "who" | null;
+type PanelType = "where" | "when" | "who" | null;
 
 const ALL_DESTINATIONS = [
   { title: "Chandigarh", subtitle: "Near you" },
@@ -46,6 +46,7 @@ export default function SearchBar({
   thirdFieldLabel = "Who",
 }: Props) {
   const [activePanel, setActivePanel] = useState<PanelType>(null);
+  const [whenTab, setWhenTab] = useState<"dates" | "flexible">("dates");
   
   // Who dropdown state
   const [adults, setAdults] = useState(guests > 0 ? guests : 0);
@@ -117,31 +118,19 @@ export default function SearchBar({
           />
         </div>
 
-        {/* CHECK IN */}
+        {/* WHEN */}
         <button
           type="button"
-          onClick={() => setActivePanel(activePanel === "checkIn" ? null : "checkIn")}
-          className={`flex h-full flex-1 flex-col justify-center px-6 transition-colors text-left rounded-full relative 
-          ${activePanel === "checkIn" ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.2)] z-10" : "hover:bg-gray-100"} 
-          ${activePanel === "checkIn" ? "" : "after:absolute after:right-0 after:top-1/2 after:h-8 after:-translate-y-1/2 after:border-r after:border-[var(--airbnb-light-gray)] hover:after:hidden"}`}
+          onClick={() => setActivePanel(activePanel === "when" ? null : "when")}
+          className={`flex h-full flex-[2] flex-col justify-center px-6 transition-colors text-left rounded-full relative 
+          ${activePanel === "when" ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.2)] z-10" : "hover:bg-gray-100"} 
+          ${activePanel === "when" ? "" : "after:absolute after:right-0 after:top-1/2 after:h-8 after:-translate-y-1/2 after:border-r after:border-[var(--airbnb-light-gray)] hover:after:hidden focus-within:after:hidden"}`}
         >
-          <span className="block text-xs font-bold text-[var(--airbnb-dark)]">Check in</span>
+          <span className="block text-xs font-bold text-[var(--airbnb-dark)]">When</span>
           <span className="text-sm text-[var(--airbnb-foggy)] truncate">
-            {checkIn ? format(checkIn, "MMM d") : "Add dates"}
-          </span>
-        </button>
-
-        {/* CHECK OUT */}
-        <button
-          type="button"
-          onClick={() => setActivePanel(activePanel === "checkOut" ? null : "checkOut")}
-          className={`flex h-full flex-1 flex-col justify-center px-6 transition-colors text-left rounded-full relative 
-          ${activePanel === "checkOut" ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.2)] z-10" : "hover:bg-gray-100"} 
-          ${activePanel === "checkOut" ? "" : "after:absolute after:right-0 after:top-1/2 after:h-8 after:-translate-y-1/2 after:border-r after:border-[var(--airbnb-light-gray)] hover:after:hidden"}`}
-        >
-          <span className="block text-xs font-bold text-[var(--airbnb-dark)]">Check out</span>
-          <span className="text-sm text-[var(--airbnb-foggy)] truncate">
-            {checkOut ? format(checkOut, "MMM d") : "Add dates"}
+            {checkIn && checkOut 
+              ? `${format(checkIn, "MMM d")} - ${format(checkOut, "MMM d")}` 
+              : (checkIn ? format(checkIn, "MMM d") : (whenTab === "flexible" ? "Anytime" : "Add dates"))}
           </span>
         </button>
 
@@ -201,32 +190,79 @@ export default function SearchBar({
         </div>
       )}
 
-      {(activePanel === "checkIn" || activePanel === "checkOut") && (
-        <div className="absolute left-1/2 top-full z-50 mt-4 -translate-x-1/2 rounded-3xl border border-[#ddd] bg-white p-6 shadow-[0_6px_20px_rgba(0,0,0,0.2)]">
-          <div className="flex justify-center mb-4">
+      {activePanel === "when" && (
+        <div className="absolute left-1/2 top-full z-50 mt-4 -translate-x-1/2 w-[800px] rounded-3xl border border-[#ddd] bg-white p-6 shadow-[0_6px_20px_rgba(0,0,0,0.2)]">
+          <div className="flex justify-center mb-6">
             <div className="flex items-center rounded-full bg-gray-100 p-1">
-              <button className="rounded-full bg-white shadow-sm px-6 py-1.5 text-sm font-semibold">Dates</button>
-              <button className="rounded-full px-6 py-1.5 text-sm font-semibold text-gray-500 hover:text-gray-800">Flexible</button>
+              <button 
+                onClick={() => setWhenTab("dates")}
+                className={`rounded-full px-6 py-1.5 text-sm font-semibold transition-colors ${whenTab === "dates" ? "bg-white shadow-sm text-black" : "text-gray-500 hover:text-gray-800"}`}
+              >
+                Dates
+              </button>
+              <button 
+                onClick={() => setWhenTab("flexible")}
+                className={`rounded-full px-6 py-1.5 text-sm font-semibold transition-colors ${whenTab === "flexible" ? "bg-white shadow-sm text-black" : "text-gray-500 hover:text-gray-800"}`}
+              >
+                Flexible
+              </button>
             </div>
           </div>
-          <DateRangePicker
-            checkIn={checkIn}
-            checkOut={checkOut}
-            onCheckInChange={onCheckInChange}
-            onCheckOutChange={(d) => {
-              onCheckOutChange(d);
-              if (d && activePanel === "checkIn") setActivePanel("checkOut");
-              if (d && activePanel === "checkOut") setActivePanel("who");
-            }}
-          />
-          <div className="mt-4 flex flex-wrap gap-2 justify-center">
-            <button className="rounded-full border border-black bg-white px-4 py-2 text-sm font-medium">Exact dates</button>
-            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 1 day</button>
-            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 2 days</button>
-            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 3 days</button>
-            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 7 days</button>
-            <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 14 days</button>
-          </div>
+          
+          {whenTab === "dates" && (
+            <>
+              <div className="flex justify-center">
+                <DateRangePicker
+                  checkIn={checkIn}
+                  checkOut={checkOut}
+                  onCheckInChange={onCheckInChange}
+                  onCheckOutChange={(d) => {
+                    onCheckOutChange(d);
+                    if (d) setActivePanel("who");
+                  }}
+                />
+              </div>
+              <div className="mt-4 flex flex-wrap gap-2 justify-center">
+                <button className="rounded-full border border-black bg-white px-4 py-2 text-sm font-medium">Exact dates</button>
+                <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 1 day</button>
+                <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 2 days</button>
+                <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 3 days</button>
+                <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 7 days</button>
+                <button className="rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium hover:border-black">± 14 days</button>
+              </div>
+            </>
+          )}
+
+          {whenTab === "flexible" && (
+            <div className="py-4 text-center">
+              <h3 className="text-lg font-semibold mb-4">How long would you like to stay?</h3>
+              <div className="flex justify-center gap-3 mb-8">
+                <button className="rounded-full border border-gray-200 px-6 py-2 hover:border-black text-sm">Weekend</button>
+                <button className="rounded-full border border-gray-200 px-6 py-2 hover:border-black text-sm">Week</button>
+                <button className="rounded-full border border-gray-200 px-6 py-2 hover:border-black text-sm">Month</button>
+              </div>
+
+              <h3 className="text-lg font-semibold mb-4">When do you want to go?</h3>
+              <div className="flex gap-4 overflow-x-auto justify-center pb-4 max-w-[650px] mx-auto">
+                {[
+                  { month: "August", year: "2026" },
+                  { month: "September", year: "2026" },
+                  { month: "October", year: "2026" },
+                  { month: "November", year: "2026" },
+                  { month: "December", year: "2026" },
+                  { month: "January", year: "2027" },
+                ].map((item, idx) => (
+                  <button key={idx} className="flex-shrink-0 flex flex-col items-center justify-center border border-gray-200 rounded-2xl p-4 w-28 hover:border-black hover:shadow-[0_2px_8px_rgba(0,0,0,0.12)] transition-shadow bg-white">
+                    <svg className="h-8 w-8 text-gray-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span className="text-sm font-medium">{item.month}</span>
+                    <span className="text-xs text-gray-500">{item.year}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
