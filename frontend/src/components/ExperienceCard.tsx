@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import { useState } from "react";
 import Badge, { BadgeType } from "./Badge";
+import { useApp } from "@/context/AppContext";
 
 export interface ExperienceData {
   id: string;
@@ -19,7 +19,8 @@ interface Props {
 }
 
 export default function ExperienceCard({ experience }: Props) {
-  const [wishlisted, setWishlisted] = useState(experience.isWishlisted ?? false);
+  const { wishlistIds, toggleWishlist } = useApp();
+  const wishlisted = wishlistIds.includes(String(experience.id));
 
   return (
     <Link href={`/listing/${experience.id}`} className="group block w-full">
@@ -38,7 +39,7 @@ export default function ExperienceCard({ experience }: Props) {
           type="button"
           onClick={(e) => {
             e.preventDefault();
-            setWishlisted(!wishlisted);
+            toggleWishlist(String(experience.id));
           }}
           className="absolute right-3 top-3 rounded-full p-1 transition-transform hover:scale-110"
           aria-label="Add to wishlist"
@@ -53,17 +54,10 @@ export default function ExperienceCard({ experience }: Props) {
         </button>
       </div>
 
-      <div className="space-y-1">
-        <h3 className="truncate font-semibold text-[#222]">{experience.title}</h3>
-        <p className="truncate text-sm text-[#717171]">{experience.location}</p>
-        <div className="flex items-center gap-1 text-sm">
-          <span className="font-semibold">{experience.price}</span>
-          <span className="text-[#222]">/ guest</span>
-          <span className="mx-1 text-[#717171]">·</span>
-          <svg viewBox="0 0 32 32" className="h-3 w-3 fill-current">
-            <path d="M15.5 2.5l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" />
-          </svg>
-          <span>{experience.rating.toFixed(1)}</span>
+      <div className="mt-3 space-y-0.5">
+        <h3 className="truncate text-[15px] font-medium text-[#222]">{experience.title}</h3>
+        <div className="truncate text-[12px] text-[#717171]">
+          {experience.price} / guest <span className="mx-1">·</span> ★ {experience.rating.toFixed(2)}
         </div>
       </div>
     </Link>

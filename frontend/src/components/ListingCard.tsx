@@ -5,13 +5,16 @@ import Link from "next/link";
 import { formatPrice } from "@/lib/api";
 import type { ListingCard } from "@/lib/types";
 import Badge from "./Badge";
+import { useApp } from "@/context/AppContext";
 
 interface Props {
   listing: ListingCard;
-  onWishlistToggle?: (id: number) => void;
 }
 
-export default function ListingCardComponent({ listing, onWishlistToggle }: Props) {
+export default function ListingCardComponent({ listing }: Props) {
+  const { wishlistIds, toggleWishlist } = useApp();
+  const isWishlisted = wishlistIds.includes(String(listing.id));
+
   return (
     <Link href={`/listing/${listing.id}`} className="group block">
       <div className="relative mb-3 aspect-square overflow-hidden rounded-xl bg-[#f7f7f7]">
@@ -35,14 +38,14 @@ export default function ListingCardComponent({ listing, onWishlistToggle }: Prop
           type="button"
           onClick={(e) => {
             e.preventDefault();
-            onWishlistToggle?.(listing.id);
+            toggleWishlist(String(listing.id));
           }}
           className="absolute right-3 top-3 rounded-full p-1 transition-transform hover:scale-110"
           aria-label="Add to wishlist"
         >
           <Heart
             className={`h-6 w-6 drop-shadow-md ${
-              listing.is_wishlisted
+              isWishlisted
                 ? "fill-[#ff385c] stroke-[#ff385c]"
                 : "fill-black/50 stroke-white"
             }`}
@@ -50,21 +53,11 @@ export default function ListingCardComponent({ listing, onWishlistToggle }: Prop
         </button>
       </div>
 
-      <div className="space-y-1">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="truncate font-semibold text-[#222]">{listing.location}</h3>
-          <div className="flex shrink-0 items-center gap-1 text-sm">
-            <svg viewBox="0 0 32 32" className="h-3 w-3 fill-current">
-              <path d="M15.5 2.5l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" />
-            </svg>
-            <span>{listing.rating.toFixed(1)}</span>
-          </div>
+      <div className="mt-3 space-y-0.5">
+        <h3 className="truncate text-[15px] font-medium text-[#222]">{listing.title}</h3>
+        <div className="truncate text-[12px] text-[#717171]">
+          {formatPrice(listing.price_per_night)} for 2 nights <span className="mx-1">·</span> ★ {listing.rating.toFixed(2)}
         </div>
-        <p className="truncate text-[#717171]">{listing.property_type}</p>
-        <p className="mt-1">
-          <span className="font-semibold">{formatPrice(listing.price_per_night)}</span>
-          <span className="text-[#222]"> night</span>
-        </p>
       </div>
     </Link>
   );

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { ExtendedListingDetail } from "@/lib/detailMockData";
 import { formatPrice } from "@/lib/api";
 import { Heart, Share, Star, Medal, ChevronRight, Grid } from "lucide-react";
+import { useApp } from "@/context/AppContext";
 
 interface Props {
   detail: ExtendedListingDetail;
@@ -11,6 +12,8 @@ interface Props {
 
 export default function ListingDetailView({ detail }: Props) {
   const [showSubheader, setShowSubheader] = useState(false);
+  const { wishlistIds, toggleWishlist } = useApp();
+  const isWishlisted = wishlistIds.includes(String(detail.id));
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,8 +59,11 @@ export default function ListingDetailView({ detail }: Props) {
           <h1 className="text-3xl font-semibold text-[#222]">{detail.title}</h1>
           <div className="flex gap-4 underline">
             <button className="flex items-center gap-2 hover:bg-[#f7f7f7] rounded-lg px-2 py-1"><Share className="h-4 w-4" /> Share</button>
-            <button className="flex items-center gap-2 hover:bg-[#f7f7f7] rounded-lg px-2 py-1">
-              <Heart className={`h-4 w-4 ${detail.isWishlisted ? "fill-[#ff385c] stroke-[#ff385c]" : ""}`} /> 
+            <button 
+              className="flex items-center gap-2 hover:bg-[#f7f7f7] rounded-lg px-2 py-1"
+              onClick={() => toggleWishlist(String(detail.id))}
+            >
+              <Heart className={`h-4 w-4 ${isWishlisted ? "fill-[#ff385c] stroke-[#ff385c]" : ""}`} /> 
               Save
             </button>
           </div>

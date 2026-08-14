@@ -25,6 +25,8 @@ interface AppContextValue {
   showToast: (message: string, type?: "success" | "error") => void;
   dismissToast: (id: number) => void;
   refreshUser: () => Promise<void>;
+  wishlistIds: string[];
+  toggleWishlist: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -33,6 +35,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [userId, setUserIdState] = useState(1);
   const [user, setUser] = useState<User | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [wishlistIds, setWishlistIds] = useState<string[]>([]);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -46,6 +49,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const stored = localStorage.getItem("userId");
     if (stored) setUserIdState(Number(stored));
+
+    const storedWishlist = localStorage.getItem("airbnb_wishlist");
+    if (storedWishlist) {
+      try {
+        setWishlistIds(JSON.parse(storedWishlist));
+      } catch (e) {
+        console.error("Failed to parse wishlist from local storage", e);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -53,7 +65,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
     refreshUser();
   }, [userId, refreshUser]);
 
+  useEffect(() => {
+    localStorage.setItem("airbnb_wishlist", JSON.stringify(wishlistIds));
+  }, [wishlistIds]);
+
   const setUserId = (id: number) => setUserIdState(id);
+
+  const toggleWishlist = useCallback((id: string) => {
+    setWishlistIds((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter(item => item !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  }, []);
 
   const dismissToast = useCallback((id: number) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
@@ -75,6 +101,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         showToast,
         dismissToast,
         refreshUser,
+        wishlistIds,
+        toggleWishlist,
       }}
     >
       {children}
