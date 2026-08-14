@@ -49,8 +49,8 @@ export default function Navbar() {
                   : "border-transparent text-[var(--airbnb-foggy)] font-medium hover:text-[var(--airbnb-dark)] hover:border-[var(--airbnb-light-gray)]"
               }`}
             >
-              <span className="text-lg">🌐</span>
-              <span className="text-sm">All</span>
+              <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f310.svg" alt="All" className="h-7 w-7" />
+              <span className="text-base">All</span>
             </Link>
             <Link
               href="/homes"
@@ -60,8 +60,8 @@ export default function Navbar() {
                   : "border-transparent text-[var(--airbnb-foggy)] font-medium hover:text-[var(--airbnb-dark)] hover:border-[var(--airbnb-light-gray)]"
               }`}
             >
-              <span className="text-lg">🏠</span>
-              <span className="text-sm">Homes</span>
+              <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f3e0.svg" alt="Homes" className="h-7 w-7" />
+              <span className="text-base">Homes</span>
             </Link>
             <Link
               href="/experiences"
@@ -71,8 +71,8 @@ export default function Navbar() {
                   : "border-transparent text-[var(--airbnb-foggy)] font-medium hover:text-[var(--airbnb-dark)] hover:border-[var(--airbnb-light-gray)]"
               }`}
             >
-              <span className="text-lg">🎈</span>
-              <span className="text-sm">Experiences</span>
+              <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f388.svg" alt="Experiences" className="h-7 w-7" />
+              <span className="text-base">Experiences</span>
             </Link>
             <Link
               href="/services"
@@ -82,8 +82,8 @@ export default function Navbar() {
                   : "border-transparent text-[var(--airbnb-foggy)] font-medium hover:text-[var(--airbnb-dark)] hover:border-[var(--airbnb-light-gray)]"
               }`}
             >
-              <span className="text-lg">🛎️</span>
-              <span className="text-sm">Services</span>
+              <img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f6ce.svg" alt="Services" className="h-7 w-7" />
+              <span className="text-base">Services</span>
             </Link>
           </nav>
         )}

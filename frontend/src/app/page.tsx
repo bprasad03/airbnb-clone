@@ -8,19 +8,9 @@ import ServiceCard from "@/components/ServiceCard";
 import { dummyHomes, dummyExperiences, dummyServices } from "@/lib/mockData";
 import { useApp } from "@/context/AppContext";
 
-// Create a mixed array
-const mixedItems = [
-  { type: "home", data: dummyHomes[0] },
-  { type: "experience", data: dummyExperiences[0] },
-  { type: "service", data: dummyServices[0] },
-  { type: "home", data: dummyHomes[1] },
-  { type: "home", data: dummyHomes[2] },
-  { type: "experience", data: dummyExperiences[1] },
-  { type: "service", data: dummyServices[1] },
-  { type: "experience", data: dummyExperiences[2] },
-  { type: "home", data: dummyHomes[3] },
-  { type: "service", data: dummyServices[2] },
-];
+import CarouselSection from "@/components/CarouselSection";
+
+
 
 export default function AllPage() {
   const { showToast } = useApp();
@@ -31,44 +21,41 @@ export default function AllPage() {
 
   return (
     <div>
-      <section className="mx-auto max-w-[1760px] px-6 py-10 md:px-10">
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[var(--airbnb-dark)]">Explore all</h2>
-        </div>
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {mixedItems.map((item, index) => {
-            if (item.type === "home") {
-              return (
-                <ListingCard
-                  key={`home-${index}`}
-                  // @ts-ignore
-                  listing={item.data}
-                  onWishlistToggle={handleWishlist}
-                />
-              );
-            }
-            if (item.type === "experience") {
-              return (
-                <ExperienceCard
-                  key={`exp-${index}`}
-                  // @ts-ignore
-                  experience={item.data}
-                />
-              );
-            }
-            if (item.type === "service") {
-              return (
-                <ServiceCard
-                  key={`srv-${index}`}
-                  // @ts-ignore
-                  service={item.data}
-                />
-              );
-            }
-            return null;
+      <section className="mx-auto max-w-[1760px] px-12 py-10 md:px-24 lg:px-32 xl:px-48">
+        <CarouselSection title="Top rated places to stay">
+          {dummyHomes.slice(0, 10).map((listing) => {
+            const cardWrapperClass = "w-[85%] sm:w-[calc(100%/2.25)] md:w-[calc(100%/3.4)] lg:w-[calc(100%/4.7)] xl:w-[calc(100%/6.1)] 2xl:w-[calc(100%/7.4)] flex-shrink-0 snap-start";
+            return (
+              <div key={listing.id} className={cardWrapperClass}>
+                <ListingCard listing={listing} onWishlistToggle={handleWishlist} />
+              </div>
+            );
           })}
-        </div>
-        <div className="mt-12 flex justify-center pb-12">
+        </CarouselSection>
+
+        <CarouselSection title="Experiences for you">
+          {dummyExperiences.slice(0, 10).map((experience) => {
+            const cardWrapperClass = "w-[85%] sm:w-[calc(100%/2.25)] md:w-[calc(100%/3.4)] lg:w-[calc(100%/4.7)] xl:w-[calc(100%/6.1)] 2xl:w-[calc(100%/7.4)] flex-shrink-0 snap-start";
+            return (
+              <div key={experience.id} className={cardWrapperClass}>
+                <ExperienceCard experience={experience} />
+              </div>
+            );
+          })}
+        </CarouselSection>
+
+        <CarouselSection title="Popular services">
+          {dummyServices.slice(0, 10).map((service) => {
+            const cardWrapperClass = "w-[85%] sm:w-[calc(100%/2.25)] md:w-[calc(100%/3.4)] lg:w-[calc(100%/4.7)] xl:w-[calc(100%/6.1)] 2xl:w-[calc(100%/7.4)] flex-shrink-0 snap-start";
+            return (
+              <div key={service.id} className={cardWrapperClass}>
+                <ServiceCard service={service} />
+              </div>
+            );
+          })}
+        </CarouselSection>
+
+        <div className="mt-8 flex justify-center pb-12">
           <button className="rounded-lg border border-black bg-white px-6 py-3 font-semibold text-[var(--airbnb-dark)] hover:bg-[#f7f7f7] transition">
             Show more
           </button>

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import Badge, { BadgeType } from "./Badge";
 
 export interface ServiceData {
   id: string;
@@ -7,7 +9,7 @@ export interface ServiceData {
   price: string;
   rating: number;
   imageUrl: string;
-  badge?: string;
+  badge?: BadgeType;
   isWishlisted?: boolean;
 }
 
@@ -19,16 +21,16 @@ export default function ServiceCard({ service }: Props) {
   const [wishlisted, setWishlisted] = useState(service.isWishlisted ?? false);
 
   return (
-    <div className="group block w-full">
-      <div className="relative mb-3 aspect-square overflow-hidden rounded-xl bg-[#f7f7f7]">
+    <Link href={`/listing/${service.id}`} className="group block w-full">
+      <div className="relative mb-3 aspect-[4/3] overflow-hidden rounded-xl bg-[#f7f7f7]">
         <img
           src={service.imageUrl}
           alt={service.title}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {service.badge && (
-          <div className="absolute left-3 top-3 rounded-md bg-white/90 px-2 py-1 text-xs font-semibold shadow-sm backdrop-blur-sm">
-            {service.badge}
+          <div className="absolute left-3 top-3">
+            <Badge type={service.badge} />
           </div>
         )}
         <button
@@ -51,19 +53,17 @@ export default function ServiceCard({ service }: Props) {
       </div>
 
       <div className="space-y-1">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="truncate font-semibold text-[var(--airbnb-dark)]">{service.title}</h3>
-          <div className="flex shrink-0 items-center gap-1 text-sm">
-            <svg viewBox="0 0 32 32" className="h-3 w-3 fill-current">
-              <path d="M15.5 2.5l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" />
-            </svg>
-            <span>{service.rating.toFixed(1)}</span>
-          </div>
+        <h3 className="truncate font-semibold text-[#222]">{service.title}</h3>
+        <div className="flex items-center gap-1 text-sm">
+          <span className="font-semibold">{service.price}</span>
+          <span className="text-[#222]">/ event</span>
+          <span className="mx-1 text-[#717171]">·</span>
+          <svg viewBox="0 0 32 32" className="h-3 w-3 fill-current">
+            <path d="M15.5 2.5l2.2 4.5 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z" />
+          </svg>
+          <span>{service.rating.toFixed(1)}</span>
         </div>
-        <p className="mt-1">
-          <span className="font-semibold text-[var(--airbnb-dark)]">{service.price}</span>
-        </p>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -19,6 +19,7 @@ export interface ListingCard {
   review_count: number;
   cover_photo: string | null;
   is_wishlisted: boolean;
+  badge?: "guest-favourite" | "popular" | "bestseller" | "premium" | "new";
 }
 
 export interface ListingDetail extends ListingCard {

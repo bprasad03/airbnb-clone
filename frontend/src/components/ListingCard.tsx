@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import Link from "next/link";
 import { formatPrice } from "@/lib/api";
 import type { ListingCard } from "@/lib/types";
+import Badge from "./Badge";
 
 interface Props {
   listing: ListingCard;
@@ -12,7 +13,7 @@ interface Props {
 
 export default function ListingCardComponent({ listing, onWishlistToggle }: Props) {
   return (
-    <Link href={`/listings/${listing.id}`} className="group block">
+    <Link href={`/listing/${listing.id}`} className="group block">
       <div className="relative mb-3 aspect-square overflow-hidden rounded-xl bg-[#f7f7f7]">
         {listing.cover_photo ? (
           <img
@@ -23,6 +24,11 @@ export default function ListingCardComponent({ listing, onWishlistToggle }: Prop
         ) : (
           <div className="flex h-full items-center justify-center text-[#717171]">
             No photo
+          </div>
+        )}
+        {listing.badge && (
+          <div className="absolute left-3 top-3">
+            <Badge type={listing.badge} />
           </div>
         )}
         <button
@@ -54,7 +60,6 @@ export default function ListingCardComponent({ listing, onWishlistToggle }: Prop
             <span>{listing.rating.toFixed(1)}</span>
           </div>
         </div>
-        <p className="truncate text-[#717171]">{listing.title}</p>
         <p className="truncate text-[#717171]">{listing.property_type}</p>
         <p className="mt-1">
           <span className="font-semibold">{formatPrice(listing.price_per_night)}</span>

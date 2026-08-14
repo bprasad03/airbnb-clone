@@ -1,45 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import SearchBar from "@/components/SearchBar";
 import ExperienceCard from "@/components/ExperienceCard";
+import CarouselSection from "@/components/CarouselSection";
 import { dummyExperiences } from "@/lib/mockData";
 
 export default function ExperiencesPage() {
-  const [location, setLocation] = useState("");
-  const [checkIn, setCheckIn] = useState<Date | undefined>();
-  const [checkOut, setCheckOut] = useState<Date | undefined>();
-  const [guests, setGuests] = useState(1);
+  const cardWrapperClass = "w-[85%] sm:w-[calc(100%/2.25)] md:w-[calc(100%/3.4)] lg:w-[calc(100%/4.7)] xl:w-[calc(100%/6.1)] 2xl:w-[calc(100%/7.4)] flex-shrink-0 snap-start";
+
+  // Slice dummy data for different sections
+  const popularExperiences = dummyExperiences.slice(0, 10);
+  const cityExperiences = dummyExperiences.slice(10, 20);
 
   return (
     <div>
-      <section className="border-b border-[#ebebeb] px-6 py-6 md:px-10">
-        <SearchBar
-          location={location}
-          checkIn={checkIn}
-          checkOut={checkOut}
-          guests={guests}
-          onLocationChange={setLocation}
-          onCheckInChange={setCheckIn}
-          onCheckOutChange={setCheckOut}
-          onGuestsChange={setGuests}
-          onSearch={() => {}}
-          onFiltersOpen={() => {}}
-        />
-      </section>
-
-      <section className="mx-auto max-w-[1760px] px-6 py-10 md:px-10">
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-[var(--airbnb-dark)]">Experiences near you</h2>
-        </div>
-        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {dummyExperiences.map((experience) => (
-            <ExperienceCard
-              key={experience.id}
-              experience={experience}
-            />
+      <section className="mx-auto max-w-[1760px] px-12 py-10 md:px-24 lg:px-32 xl:px-48">
+        
+        <CarouselSection title="Popular experiences near you">
+          {popularExperiences.map((experience) => (
+            <div key={experience.id} className={cardWrapperClass}>
+              <ExperienceCard experience={experience} />
+            </div>
           ))}
-        </div>
+        </CarouselSection>
+
+        <CarouselSection title="Things to do in Jaipur">
+          {cityExperiences.map((experience) => (
+            <div key={experience.id} className={cardWrapperClass}>
+              <ExperienceCard experience={experience} />
+            </div>
+          ))}
+        </CarouselSection>
+
       </section>
     </div>
   );
